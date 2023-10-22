@@ -1,0 +1,71 @@
+openapi: 3.1.0
+
+info:
+  title: KPJ Chat API
+  version: 0.1.0
+
+tags:
+  - name: Messages
+
+paths:
+  /messages:
+    get:
+      tags:
+        - Messages
+      summary: Returns all messages
+      operationId: listMessages
+      responses:
+        default:
+          description: Unexpected error
+        200:
+          description: Messages successfully fetched
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Messages"
+    post:
+      tags:
+        - Messages
+      summary: Adds a new message
+      operationId: createMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageRequest"
+      responses:
+        default:
+          description: Unexpected error
+        201:
+          description: Message sent
+
+components:
+  schemas:
+    MessageRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "John Doe"
+        message:
+          type: string
+          example: "Lorem ipsum ..."
+    Messages:
+      type: array
+      items:
+        $ref: "#/components/schemas/Message"
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+        name:
+          type: string
+          example: "John Doe"
+        message:
+          type: string
+          example: "Lorem ipsum ..."
