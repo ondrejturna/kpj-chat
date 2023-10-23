@@ -19,6 +19,9 @@
 - [ ] Implement message receiving via JMS in `MessageServiceImpl#onMessage`
 - [ ] Implement presence sending via scheduled call in `MessageServiceImpl#sendPresence` with `@Scheduled`
 
+
+![Sequence](sequence.png)
+
 ## Definition of done
 
 ### Message sending

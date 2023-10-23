@@ -1,0 +1,46 @@
+@startuml
+!define Actor user
+!define Actor service
+!define Actor serviceBus
+
+actor User as user
+actor Service as service
+actor "Service Bus" as serviceBus
+
+== Send a message ==
+
+user -> service ++ : Message Request
+service -> serviceBus: Publish Message
+service --> user: Message ID
+deactivate service
+service -[hidden]> service
+
+== Get a list of messages ==
+
+user -> service ++ : List Request
+service -> service: Get Messages
+service --> user: List of Messages
+deactivate service
+service -[hidden]> service
+
+== Send a Presence message ==
+
+loop Every 10 seconds
+    service -> serviceBus: Send Presence Message
+end
+
+== Receive messages ==
+
+serviceBus -> service ++ : Accept message
+
+alt Type Message
+service -> service: Store message
+else Type Presence
+service -> service: Log presence
+else Type Unknown
+service -> service: Log warning
+end
+
+deactivate service
+
+@enduml
