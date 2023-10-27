@@ -69,7 +69,18 @@ public class MessageServiceImpl implements MessageService, MessageListener {
     }
 
     // TODO: execute every 10 seconds (*/10 * * * * *)
+    @Scheduled(cron = "*/10 * * * * *")
     public void sendPresence() {
         // TODO: create a new messageEvent with type PRESENCE, id, created and name; publish it via messageBroker and log an info message
+
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setType(MessageType.PRESENCE);
+        messageEvent.setId(UUID.randomUUID());
+        messageEvent.setCreated(OffsetDateTime.now());
+        messageEvent.setName("Some Name");
+
+        messageBroker.publish(messageEvent);
+
+        log.info(messageEvent);
     }
 }
