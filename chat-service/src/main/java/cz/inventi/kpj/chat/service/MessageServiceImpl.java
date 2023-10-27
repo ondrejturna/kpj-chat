@@ -43,7 +43,15 @@ public class MessageServiceImpl implements MessageService, MessageListener {
     @Override
     public UUID createMessage(MessageRequest messageRequest) {
         // TODO: map messageRequest to messageEvent; set type, id and created; publish messageEvent via messageBroker and return its id
-        return UUID.randomUUID();
+
+        MessageEvent messageEvent = messageMapper.requestToEvent(messageRequest);
+        messageEvent.setType(MessageType.MESSAGE);
+        messageEvent.setId(UUID.randomUUID());
+        messageEvent.setCreated(OffsetDateTime.now());
+
+        messageBroker.publish(messageEvent);
+
+        return messageEvent.getId();
     }
 
     @Override
