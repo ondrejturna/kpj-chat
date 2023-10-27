@@ -57,6 +57,15 @@ public class MessageServiceImpl implements MessageService, MessageListener {
     @Override
     public void onMessage(MessageEvent messageEvent) {
         // TODO: switch over messageEvent type; if it is a message, map it to Message and add it to messages list; if it is a presence check, just log it; if it is an unknown type, log a warning
+
+        if (messageEvent.getType() == MessageType.MESSAGE) {
+            Message message = messageMapper.eventToDTO(messageEvent);
+            messages.add(message);
+        } else if (messageEvent.getType() == MessageType.PRESENCE) {
+            log.info(messageEvent.getType());
+        } else {
+            log.warn(messageEvent.getType());
+        }
     }
 
     // TODO: execute every 10 seconds (*/10 * * * * *)
